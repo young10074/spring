@@ -97,15 +97,15 @@ public class ReplyController {
 	// 페이징 처리된 댓글 목록을 가져오는 method
 	@GetMapping(value = "/pages/{bno}/{page}", produces = { MediaType.APPLICATION_XML_VALUE,
 															MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<ReplyPageDTO> getList(@PathVariable("page") int page, @PathVariable("bno") Long bno) {
+	public ResponseEntity<ReplyPageDTO> getList(@PathVariable("page") int page, @PathVariable("idx") int idx) {
 
 		Criteria cri = new Criteria(page, 10);
 		
-		log.info("get Reply List bno: " + bno);
+		log.info("get Reply List bno: " + idx);
 
 		log.info("cri:" + cri);
 
-		return new ResponseEntity<>(service.getListWithPaging(cri, bno), HttpStatus.OK);
+		return new ResponseEntity<>(service.getListWithPaging(cri, idx), HttpStatus.OK);
 	}
 
 }

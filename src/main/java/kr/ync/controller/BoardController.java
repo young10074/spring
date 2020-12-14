@@ -59,13 +59,7 @@ public class BoardController {
 			if(multipartFile.getSize() > 0) {
 				switch (index) {
 				case 0:
-					board.setFile_1(UploadUtils.uploadFormPost(multipartFile, uploadPath));
-					break;
-				case 1:
-					board.setFile_2(UploadUtils.uploadFormPost(multipartFile, uploadPath));
-					break;
-				default:
-					board.setFile_3(UploadUtils.uploadFormPost(multipartFile, uploadPath));
+					board.setImg(UploadUtils.uploadFormPost(multipartFile, uploadPath));
 					break;
 				}
 			}
@@ -76,16 +70,16 @@ public class BoardController {
 
 		service.register(board);
 
-		rttr.addFlashAttribute("result", board.getBno());
+		rttr.addFlashAttribute("result", board.getIdx());
 
 		return "redirect:/admin/list";
 	}
 
 	@GetMapping({ "/get", "/modify" })
-	public void get(@RequestParam("bno") Long bno, @ModelAttribute("cri") Criteria cri, Model model) {
+	public void get(@RequestParam("idx") int idx, @ModelAttribute("cri") Criteria cri, Model model) {
 
 		log.info("/get or modify");
-		model.addAttribute("board", service.get(bno));
+		model.addAttribute("board", service.get(idx));
 	}
 
 	@PreAuthorize("principal.username == #board.writer")
@@ -99,13 +93,7 @@ public class BoardController {
 			if (multipartFile.getSize() > 0) {
 				switch (index) {
 				case 0:
-					board.setFile_1(UploadUtils.uploadFormPost(multipartFile, uploadPath));
-					break;
-				case 1:
-					board.setFile_2(UploadUtils.uploadFormPost(multipartFile, uploadPath));
-					break;
-				default:
-					board.setFile_3(UploadUtils.uploadFormPost(multipartFile, uploadPath));
+					board.setImg(UploadUtils.uploadFormPost(multipartFile, uploadPath));
 					break;
 				}
 			}
@@ -121,10 +109,10 @@ public class BoardController {
 
 	@PreAuthorize("principal.username == #writer")
 	@PostMapping("/remove")
-	public String remove(@RequestParam("bno") Long bno, Criteria cri, RedirectAttributes rttr, String writer) {
+	public String remove(@RequestParam("idx") int idx, Criteria cri, RedirectAttributes rttr, String writer) {
 
-		log.info("remove..." + bno);
-		if (service.remove(bno)) {
+		log.info("remove..." + idx);
+		if (service.remove(idx)) {
 			rttr.addFlashAttribute("result", "success");
 		}
 

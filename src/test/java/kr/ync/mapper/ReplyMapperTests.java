@@ -100,9 +100,9 @@ public class ReplyMapperTests {
 		// 1page 10개 출력
 		Criteria cri = new Criteria(1, 10);
 
-		List<ReplyVO> replies = mapper.getListWithPaging(cri,2445061L);
+//		List<ReplyVO> replies = mapper.getListWithPaging(cri,2445061L);
 
-		replies.forEach(reply -> log.info(reply));
+//		replies.forEach(reply -> log.info(reply));
 
 	}
 

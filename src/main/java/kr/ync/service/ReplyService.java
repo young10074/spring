@@ -16,8 +16,8 @@ public interface ReplyService {
 
 	public int remove(Long rno);
 
-	public List<ReplyVO> getList(Criteria cri, Long bno);
+	public List<ReplyVO> getList(Criteria cri, int idx);
 	
-	public ReplyPageDTO getListWithPaging(Criteria cri, Long bno);
+	public ReplyPageDTO getListWithPaging(Criteria cri, int idx);
 
 }

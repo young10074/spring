@@ -1,15 +1,13 @@
 package kr.ync.mapper;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import kr.ync.domain.BoardVO;
-import kr.ync.domain.Criteria;
+import kr.ync.domain.LocalVO;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
@@ -28,18 +26,21 @@ public class BoardMapperTests {
 //
 //	}
 //
-//	@Test
-//	public void testInsert() {
-//
+	@Test
+	public void testInsert() {
+
 //		BoardVO board = new BoardVO();
 //		board.setTitle("새로 작성하는 글");
 //		board.setContent("새로 작성하는 내용");
-//		board.setWriter("newbie");
-//
-//		mapper.insert(board);
-//
-//		log.info(board);
-//	}
+//		board.setImg(null);
+//		board.setId("newbie");
+		LocalVO local = new LocalVO();
+		local.setLocal_idx(2);
+		local.setLocal_name("서울특별시");
+		mapper.local_insert(local);
+
+		log.info(local);
+	}
 //
 //	@Test
 //	public void testInsertSelectKey() {
@@ -112,17 +113,17 @@ public class BoardMapperTests {
 //
 //	}
 	
-	  @Test
-	  public void testSearch() {
-
-	    Criteria cri = new Criteria();
-	    cri.setKeyword("키워드");
-	    cri.setType("TCW");
-
-	    List<BoardVO> list = mapper.getListWithPaging(cri);
-
-	    list.forEach(board -> log.info(board));
-	  }
+//	  @Test
+//	  public void testSearch() {
+//
+//	    Criteria cri = new Criteria();
+//	    cri.setKeyword("키워드");
+//	    cri.setType("TCW");
+//
+//	    List<BoardVO> list = mapper.getListWithPaging(cri);
+//
+//	    list.forEach(board -> log.info(board));
+//	  }
 
 
 }

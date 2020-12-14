@@ -17,9 +17,9 @@ public interface ReplyMapper {
 
 	public int update(ReplyVO reply);
 	
-	public List<ReplyVO> getList(@Param("cri") Criteria cri, @Param("bno") Long bno);
+	public List<ReplyVO> getList(@Param("cri") Criteria cri, @Param("idx") int idx);
 	
-	public List<ReplyVO> getListWithPaging(@Param("cri") Criteria cri, @Param("bno") Long bno);
+	public List<ReplyVO> getListWithPaging(@Param("cri") Criteria cri, @Param("idx") int idx);
 
-	public int getCountByBno(Long bno);
+	public int getCountByBno(int idx);
 }

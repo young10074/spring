@@ -14,7 +14,7 @@
 							content like '%'||#{keyword}||'%'
 						</when>
 						<when test="type == 'W'.toString()">
-							writer like '%'||#{keyword}||'%'
+							id like '%'||#{keyword}||'%'
 						</when>
 					</choose>
 				</trim>
@@ -24,185 +24,66 @@
 	
 	<select id="getList" resultType="kr.ync.domain.BoardVO">
 	<![CDATA[
-		select * from tbl_board where bno > 0 
+		select * from tbl_l_board where idx > 0 
 		]]>
 	</select>
 	
 	<insert id="insert">
-		insert into tbl_board (bno, title, content, writer, file_1, file_2, file_3)
-		values (seq_board.nextval, #{title}, #{content}, #{writer}, #{file_1}, #{file_2}, #{file_3})
+		insert into tbl_l_board (idx, title, content, img, id, local_sub_idx)
+		values (seq_l_board.nextval, #{title}, #{content}, #{img}, #{id}, #{local_sub_idx})
+	</insert>
+	
+	<insert id="local_insert">
+		insert into local (local_idx, local_name)
+		values (#{local_idx}, #{local_name})
 	</insert>
 	
 	<insert id="insertSelectKey">
 
-		<selectKey keyProperty="bno" order="BEFORE"
-			resultType="Long">
-			select seq_board.nextval from dual
+		<selectKey keyProperty="idx" order="BEFORE"
+			resultType="int">
+			select seq_l_board.nextval from dual
 		</selectKey>
 
-		insert into tbl_board (bno,title,content, writer, file_1, file_2, file_3)
-		values (#{bno},
-		#{title}, #{content}, #{writer}, #{file_1}, #{file_2}, #{file_3})
+		insert into tbl_l_board (idx, title, content, img, id, local_sub_idx)
+		values (#{idx}, #{title}, #{content}, #{img}, #{id}, #{local_sub_idx})
 	</insert>
 	
 	<select id="read" resultType="kr.ync.domain.BoardVO">
-		select * from tbl_board where bno =	#{bno}
+		select * from tbl_l_board where idx =	#{idx}
 	</select>
 
 
 	<delete id="delete">
-		delete tbl_board where bno = #{bno}
+		delete tbl_l_board where idx = #{idx}
 	</delete>
  
 	<update id="update">
-		update tbl_board
+		update tbl_l_board
 		set title= #{title},
 		content=#{content},
-		writer = #{writer},
-		updateDate = sysdate
-		where bno =
-		#{bno}
+		id = #{id}
+		where idx =
+		#{idx}
 	</update>
 	
-	<!-- <select id="getListWithPaging" resultType="kr.ync.domain.BoardVO">
-		<![CDATA[
-  		SELECT	bno,
-  				title,
-  				content,
-  				writer,
-  				regdate,
-  				updatedate
-		FROM	(SELECT /*+INDEX_DESC(tbl_board pk_board) */
-						rownum rn,
-						bno,
-						title,
-						content,
-						writer,
-						regdate,
-						updatedate
-				FROM	tbl_board
-				WHERE	rownum <= 20 
-				)
-		WHERE rn > 10   
-		]]>
-	</select> -->
-	<!-- 
 	<select id="getListWithPaging" resultType="kr.ync.domain.BoardVO">
 		<![CDATA[
-  		SELECT	bno,
-  				title,
-  				content,
-  				writer,
-  				regdate,
-  				updatedate
-		FROM	(SELECT /*+INDEX_DESC(tbl_board pk_board) */
-						rownum rn,
-						bno,
-						title,
-						content,
-						writer,
-						regdate,
-						updatedate
-				FROM	tbl_board
-				WHERE	rownum <= #{pageNum} * #{amount}
-				)
-		WHERE rn > (#{pageNum} -1) * #{amount}
-		]]>
-	</select>
-	 -->
-	<!-- 
-	<select id="getListWithPaging" resultType="kr.ync.domain.BoardVO">
-		<![CDATA[
-			SELECT	bno,
-					title,
-					content,
-					writer,
-					regdate,
-					updatedate
-			FROM	(SELECT /*+INDEX_DESC(tbl_board pk_board) */
-        					rownum rn,
-        					bno,
-        					title,
-        					content,
-        					writer,
-        					regdate,
-        					updatedate 
-					FROM	tbl_board
-					WHERE
-		]]>	
-					<trim prefix="(" suffix=") AND " prefixOverrides="OR">
-						<foreach item='type' collection="typeArr">
-							<trim prefix="OR">
-								<choose>
-									<when test="type == 'T'.toString()">
-										title like '%'||#{keyword}||'%'
-									</when>
-									<when test="type == 'C'.toString()">
-										content like '%'||#{keyword}||'%'
-									</when>
-									<when test="type == 'W'.toString()">
-										writer like '%'||#{keyword}||'%'
-									</when>
-								</choose>
-							</trim>
-						</foreach>
-					</trim>
-		<![CDATA[
-					rownum <= #{pageNum} * #{amount}
-      				)
-			WHERE rn > (#{pageNum} -1) * #{amount}   
-  		]]>
-	</select>
-	 -->
-	
-	<!-- <select id="getListWithPaging" resultType="kr.ync.domain.BoardVO">
-		<![CDATA[
-		SELECT	bno,
+		SELECT	idx,
 				title,
 				content,
-				writer,
-				regdate,
-				updatedate
-		FROM	(SELECT /*+INDEX_DESC(tbl_board pk_board) */
+				img,
+				id,
+				local_sub_idx
+		FROM	(SELECT /*+INDEX_DESC(tbl_l_board pk_board) */
         				rownum rn,
-        				bno,
-        				title,
-        				content,
-        				writer,
-        				regdate,
-        				updatedate 
-      			FROM	tbl_board
-				WHERE 
-  		]]>
-  		
-		<include refid="criteria"></include> 
-      
-		<![CDATA[    
-      			rownum <= #{pageNum} * #{amount}
-      			)
-  		WHERE rn > (#{pageNum} -1) * #{amount}   
-		]]>
-	</select> -->
-	
-	<select id="getListWithPaging" resultType="kr.ync.domain.BoardVO">
-		<![CDATA[
-		SELECT	bno,
-				title,
-				content,
-				writer,
-				regdate,
-				updatedate,
-				replycnt
-		FROM	(SELECT /*+INDEX_DESC(tbl_board pk_board) */
-        				rownum rn,
-        				bno,
-        				title,
-        				content,
-        				writer,
-        				regdate,
-        				updatedate,
-        				replycnt
-      			FROM	tbl_board
+        				idx,
+						title,
+						content,
+						img,
+						id,
+						local_sub_idx
+      			FROM	tbl_l_board
 				WHERE 
   		]]>
 		<include refid="criteria"></include> 
@@ -214,25 +95,17 @@
 		]]>
 	</select>
 	
-	<!-- 
 	<select id="getTotalCount" resultType="int">
-		<![CDATA[
-		select count(*) from tbl_board where 
-		bno > 0
-		]]>
-	</select>
-	 -->
-	<select id="getTotalCount" resultType="int">
-		select count(*) from tbl_board where 
+		select count(*) from tbl_l_board where 
 		
 		<include refid="criteria"></include>
 		
 		<![CDATA[
-		bno > 0
+		idx > 0
 		]]>
 	</select>
 	
 	<update id="updateReplyCnt">
-		UPDATE tbl_board SET replycnt = replycnt + #{amount} WHERE bno = #{bno}
+		UPDATE tbl_l_board SET replycnt = replycnt + #{amount} WHERE idx = #{idx}
 	</update> 
 </mapper>

@@ -31,11 +31,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public BoardVO get(Long bno) {
+	public BoardVO get(int idx) {
 
-		log.info("get......" + bno);
+		log.info("get......" + idx);
 
-		return mapper.read(bno);
+		return mapper.read(idx);
 
 	}
 
@@ -50,11 +50,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public boolean remove(Long bno) {
+	public boolean remove(int idx) {
 
-		log.info("remove...." + bno);
+		log.info("remove...." + idx);
 
-		return mapper.delete(bno) == 1;
+		return mapper.delete(idx) == 1;
 	}
 
 	 @Override
